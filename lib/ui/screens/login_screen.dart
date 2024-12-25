@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stronglog/domain/services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
   final _formKey = GlobalKey<FormState>();
 
@@ -10,6 +12,8 @@ class HomeScreen extends StatelessWidget {
     TextTheme textTheme = Theme.of(context).textTheme;
 
     Size mediaQuery = MediaQuery.of(context).size;
+
+    AuthService authService = AuthService();
 
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
@@ -75,15 +79,21 @@ class HomeScreen extends StatelessWidget {
                           height: 48,
                           width: double.infinity,
                           child: FilledButton(
-                            onPressed: () {
+                            onPressed: () async {
                               // Validate returns true if the form is valid, or false otherwise.
                               if (_formKey.currentState!.validate()) {
-                                // If the form is valid, display a snackbar. In the real world,
-                                // you'd often call a server or save the information in a database.
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Processing Data')),
-                                );
+                                try {
+                                  User? user =
+                                      await authService.signInWithEmail(
+                                    emailController.text.trim(),
+                                    passwordController.text.trim(),
+                                  );
+                                  if (user != null) {
+                                    print("Usuario autenticado: ${user.email}");
+                                  }
+                                } catch (e) {
+                                  print("Error al iniciar sesión: $e");
+                                }
                               }
                             },
                             child: const Text(
@@ -99,6 +109,19 @@ class HomeScreen extends StatelessWidget {
                             child: Text("¿Olvidaste la contraseña?",
                                 style: textTheme.bodyMedium
                                     ?.copyWith(fontWeight: FontWeight.bold)),
+                          ),
+                        ),
+                        SizedBox(
+                          height: mediaQuery.height * 0.08,
+                        ),
+                        SizedBox(
+                          height: 48,
+                          width: double.infinity,
+                          child: OutlinedButton(
+                            onPressed: () async {},
+                            child: const Text(
+                              'Crea una nueva cuenta',
+                            ),
                           ),
                         ),
                       ],

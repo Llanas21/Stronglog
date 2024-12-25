@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "985972406227",
+    "project_id": "stronglog-105",
+    "storage_bucket": "stronglog-105.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985972406227:android:dde9be77338300b2142126",
+        "android_client_info": {
+          "package_name": "com.example.stronglog"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcQqn-g6OPUWVqDV223Fak2n5bSRhw0MI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

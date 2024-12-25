@@ -64,6 +64,16 @@ ThemeData lightTheme = ThemeData(
       ),
     ),
   ),
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+      foregroundColor: Colors.black,
+      side: const BorderSide(color: Colors.black),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4.0),
+      ),
+    ),
+  ),
+
   switchTheme: SwitchThemeData(
     thumbColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
