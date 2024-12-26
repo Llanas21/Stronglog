@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
   listTileTheme: const ListTileThemeData(
-    iconColor: Colors.white,
+    iconColor: Colors.black,
   ),
   snackBarTheme: const SnackBarThemeData(
     actionTextColor: Colors.black,
@@ -21,7 +21,7 @@ ThemeData lightTheme = ThemeData(
     seedColor: Colors.grey,
     brightness: Brightness.light, // Asegura que el esquema es consistente
   ),
-  useMaterial3: true, // Actualizado a Material 3
+  useMaterial3: false, // Actualizado a Material 3
   scaffoldBackgroundColor: Colors.white,
   textTheme: TextTheme(
     titleLarge: const TextStyle(
@@ -40,11 +40,11 @@ ThemeData lightTheme = ThemeData(
       fontWeight: FontWeight.bold,
     ),
     labelMedium: TextStyle(
-      color: Colors.grey[600],
+      color: Colors.grey[400],
       fontSize: 16,
     ),
     labelSmall: TextStyle(
-      color: Colors.grey[600],
+      color: Colors.grey[400],
       fontSize: 12,
     ),
     bodyMedium: const TextStyle(
