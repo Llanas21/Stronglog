@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/record_model.dart' as r;
 
@@ -51,21 +52,78 @@ class ExerciseWidget extends StatelessWidget {
                 )),
             Expanded(
                 flex: 1,
-                child: Column(
-                  children: [
-                    Text(
-                      "${record.lastWeight.toString()} lbs",
-                      style: textTheme.titleLarge,
-                    ),
-                    Text(
-                      "Último peso",
-                      style: textTheme.labelSmall,
-                    )
-                  ],
+                child: GestureDetector(
+                  child: Column(
+                    children: [
+                      Text(
+                        "${record.lastWeight.toString()} lbs",
+                        style: textTheme.titleLarge,
+                      ),
+                      Text(
+                        "Último peso",
+                        style: textTheme.labelSmall,
+                      )
+                    ],
+                  ),
+                  onTap: () => showNumberPicker(context),
                 ))
           ],
         ),
       ),
+    );
+  }
+
+  void showNumberPicker(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+
+    int currentValue = record.lastWeight;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text(
+                'Peso de hoy',
+                style: textTheme.bodyMedium,
+              ),
+              content: NumberPicker(
+                minValue: 0,
+                maxValue: 600,
+                value: currentValue,
+                onChanged: (newValue) {
+                  setState(() {
+                    currentValue = newValue;
+                  });
+                },
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    //TODO Actualiza el valor del peso en el modelo
+
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'Aceptar',
+                    style: textTheme.labelSmall?.copyWith(color: Colors.black),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'Cancelar',
+                    style: textTheme.labelSmall,
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }
