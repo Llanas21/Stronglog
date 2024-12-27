@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
+import 'package:provider/provider.dart';
 import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/firebase_options.dart';
+import 'package:stronglog/ui/providers/add_exercise_provider.dart';
+import 'package:stronglog/ui/screens/add_exercise_screen.dart';
 import 'package:stronglog/ui/screens/detailed_workout_screen.dart';
 import 'package:stronglog/ui/screens/home_screen.dart';
 import 'package:stronglog/ui/screens/login_screen.dart';
@@ -22,16 +25,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Stronglog',
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: _themeManager.themeMode,
-      home: DetailedWorkoutScreen(
-        workout: Workout(
-            id: "ypF6gMJM6D82d4EJHRvq", name: "Pecho & Trícep", day: "Monday"),
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AddExerciseProvider>(
+            create: (context) => AddExerciseProvider()),
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Stronglog',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: _themeManager.themeMode,
+          home: HomeScreen()),
     );
   }
 }

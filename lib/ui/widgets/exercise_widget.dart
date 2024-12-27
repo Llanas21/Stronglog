@@ -57,7 +57,7 @@ class ExerciseWidget extends StatelessWidget {
                   child: Column(
                     children: [
                       FutureBuilder(
-                        future: loadData(exercise.id),
+                        future: loadData(exercise.id!),
                         builder: (BuildContext context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {

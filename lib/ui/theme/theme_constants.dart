@@ -86,6 +86,9 @@ ThemeData lightTheme = ThemeData(
       return Colors.white; // Color cuando está inactivo
     }),
   ),
+  checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.all<Color>(Colors.white),
+      checkColor: MaterialStateProperty.all<Color>(Colors.black)),
   popupMenuTheme: const PopupMenuThemeData(
     color: Colors.white,
   ),

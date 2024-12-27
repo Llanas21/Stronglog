@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
-import 'package:stronglog/domain/models/record_model.dart' as r;
-import 'package:stronglog/domain/services/record_service.dart';
 
 class DetailedWorkoutWidget extends StatelessWidget {
   const DetailedWorkoutWidget({

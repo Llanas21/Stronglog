@@ -4,7 +4,6 @@ import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/domain/services/exercise_service.dart';
 import 'package:stronglog/ui/widgets/detailed_workout_widget.dart';
 import 'package:stronglog/ui/widgets/drawer_widget.dart';
-import 'package:stronglog/ui/widgets/exercise_widget.dart';
 
 class DetailedWorkoutScreen extends StatelessWidget {
   const DetailedWorkoutScreen({

@@ -1,34 +1,29 @@
-class Exercise {
-  final String? id;
+class ApiNinja {
   final String name;
   final String type;
   final String muscle;
   final String equipment;
   final String difficulty;
   final String instructions;
-  final String idWorkout;
 
-  Exercise(
-      {this.id,
-      required this.name,
-      required this.type,
-      required this.muscle,
-      required this.equipment,
-      required this.difficulty,
-      required this.instructions,
-      required this.idWorkout});
+  ApiNinja({
+    required this.name,
+    required this.type,
+    required this.muscle,
+    required this.equipment,
+    required this.difficulty,
+    required this.instructions,
+  });
 
   // Factory method to create an instance from a JSON map
-  factory Exercise.fromJson(Map<String, dynamic> json, String id) {
-    return Exercise(
-      id: id,
+  factory ApiNinja.fromJson(Map<String, dynamic> json) {
+    return ApiNinja(
       name: json['name'],
       type: json['type'],
       muscle: json['muscle'],
       equipment: json['equipment'],
       difficulty: json['difficulty'],
       instructions: json['instructions'],
-      idWorkout: json['id_workout'],
     );
   }
 
@@ -41,7 +36,6 @@ class Exercise {
       'equipment': equipment,
       'difficulty': difficulty,
       'instructions': instructions,
-      'id_workout': idWorkout,
     };
   }
 }
