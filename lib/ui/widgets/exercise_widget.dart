@@ -2,25 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/record_model.dart' as r;
+import 'package:stronglog/domain/services/record_service.dart';
 
 class ExerciseWidget extends StatelessWidget {
   const ExerciseWidget({
     super.key,
     required this.exercise,
-    required this.record,
   });
 
   final Exercise exercise;
-  final r.Record record;
 
   @override
   Widget build(BuildContext context) {
+    r.Record? record;
     TextTheme textTheme = Theme.of(context).textTheme;
 
     Size mediaQuery = MediaQuery.of(context).size;
 
     return Container(
-      decoration: const BoxDecoration(border: Border(bottom: BorderSide())),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey[300]!))),
       child: Padding(
         padding: EdgeInsets.symmetric(
             horizontal: mediaQuery.width * 0.04,
@@ -55,17 +56,39 @@ class ExerciseWidget extends StatelessWidget {
                 child: GestureDetector(
                   child: Column(
                     children: [
-                      Text(
-                        "${record.lastWeight.toString()} lbs",
-                        style: textTheme.titleLarge,
+                      FutureBuilder(
+                        future: loadData(exercise.id),
+                        builder: (BuildContext context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          record = snapshot.data;
+
+                          if (record == null) {
+                            return Text(
+                              "0 lbs",
+                              style: textTheme.titleLarge,
+                            );
+                          } else {
+                            return Text(
+                              "${record!.lastWeight.toString()} lbs",
+                              style: textTheme.titleLarge,
+                            );
+                          }
+                        },
                       ),
                       Text(
                         "Último peso",
                         style: textTheme.labelSmall,
-                      )
+                      ),
                     ],
                   ),
-                  onTap: () => showNumberPicker(context),
+                  onTap: () => showNumberPicker(context, record),
                 ))
           ],
         ),
@@ -73,10 +96,16 @@ class ExerciseWidget extends StatelessWidget {
     );
   }
 
-  void showNumberPicker(BuildContext context) {
+  void showNumberPicker(BuildContext context, r.Record? record) {
     TextTheme textTheme = Theme.of(context).textTheme;
 
-    int currentValue = record.lastWeight;
+    int currentValue;
+
+    if (record == null) {
+      currentValue = 0;
+    } else {
+      currentValue = record.lastWeight;
+    }
 
     showDialog(
       context: context,
@@ -125,5 +154,11 @@ class ExerciseWidget extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<r.Record?> loadData(String idExercise) async {
+    RecordService recordService = RecordService();
+
+    return await recordService.getRecordByExercise(idExercise);
   }
 }

@@ -43,6 +43,27 @@ class RecordService {
     }
   }
 
+  // Read a single record by exercise
+  Future<Record?> getRecordByExercise(String idExercise) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection(collectionPath)
+          .where('id_exercise', isEqualTo: idExercise)
+          .orderBy('date_time', descending: true)
+          .limit(1)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot doc = querySnapshot.docs.first;
+        return Record.fromJson(doc.data() as Map<String, dynamic>, doc.id);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      throw Exception('Error fetching record: $e');
+    }
+  }
+
   // Update an existing record
   Future<void> updateRecord(String id, Record updatedRecord) async {
     try {

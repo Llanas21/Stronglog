@@ -28,6 +28,22 @@ class ExerciseService {
     }
   }
 
+  // Read exercises from workout
+  Future<List<Exercise>> getExercisesByWorkout(String idWorkout) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection(collectionPath)
+          .where('id_workout', isEqualTo: idWorkout)
+          .get();
+      return snapshot.docs
+          .map((doc) =>
+              Exercise.fromJson(doc.data() as Map<String, dynamic>, doc.id))
+          .toList();
+    } catch (e) {
+      throw Exception('Error fetching exercises: $e');
+    }
+  }
+
   // Read a single exercise by ID
   Future<Exercise?> getExerciseById(String id) async {
     try {

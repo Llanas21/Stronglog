@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:stronglog/domain/models/exercise_model.dart';
-import 'package:stronglog/domain/services/exercise_service.dart';
+import 'package:stronglog/domain/models/workout_model.dart';
+import 'package:stronglog/domain/services/workout_service.dart';
 import 'package:stronglog/ui/widgets/drawer_widget.dart';
-import 'package:stronglog/ui/widgets/exercise_widget.dart';
+import 'package:stronglog/ui/widgets/workout_widget.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class WorkoutsScreen extends StatelessWidget {
+  const WorkoutsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  "Rutina",
+                  "Rutinas",
                   style: textTheme.titleLarge,
                 ),
               ),
@@ -46,14 +46,12 @@ class HomeScreen extends StatelessWidget {
                     return Text('Error: ${snapshot.error}');
                   }
 
-                  List<Exercise> exercises = snapshot.data!;
+                  List<Workout> workouts = snapshot.data!;
 
                   return ListView.builder(
-                      itemCount: exercises.length,
+                      itemCount: workouts.length,
                       itemBuilder: (context, i) {
-                        return ExerciseWidget(
-                          exercise: exercises[i],
-                        );
+                        return WorkoutWidget(workout: workouts[i]);
                       });
                 },
               ),
@@ -65,8 +63,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Future<List<Exercise>> loadData() async {
-    ExerciseService exerciseService = ExerciseService();
-    return await exerciseService.getExercises();
+  Future<List<Workout>> loadData() async {
+    WorkoutService workoutService = WorkoutService();
+    return await workoutService.getWorkouts();
   }
 }
