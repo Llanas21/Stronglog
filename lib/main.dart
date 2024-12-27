@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
+import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/firebase_options.dart';
+import 'package:stronglog/ui/screens/detailed_workout_screen.dart';
 import 'package:stronglog/ui/screens/home_screen.dart';
 import 'package:stronglog/ui/screens/login_screen.dart';
-import 'package:stronglog/ui/screens/workouts-screen.dart';
+import 'package:stronglog/ui/screens/workouts_screen.dart';
 import 'package:stronglog/ui/theme/theme_constants.dart';
 import 'package:stronglog/ui/theme/theme_manager.dart';
 
@@ -26,7 +28,10 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: _themeManager.themeMode,
-      home: WorkoutsScreen(),
+      home: DetailedWorkoutScreen(
+        workout: Workout(
+            id: "ypF6gMJM6D82d4EJHRvq", name: "Pecho & Trícep", day: "Monday"),
+      ),
     );
   }
 }
