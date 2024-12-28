@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
+import 'package:stronglog/domain/services/exercise_service.dart';
+import 'package:stronglog/main.dart';
+import 'package:stronglog/ui/providers/exercise_provider.dart';
 
 class DetailedWorkoutWidget extends StatelessWidget {
   const DetailedWorkoutWidget({
@@ -50,7 +55,9 @@ class DetailedWorkoutWidget extends StatelessWidget {
             PopupMenuButton<String>(
               itemBuilder: (BuildContext context) => [
                 PopupMenuItem<String>(
-                  onTap: () {},
+                  onTap: () {
+                    context.pushNamed("/modify_exercise", extra: exercise);
+                  },
                   child: Text(
                     'Editar',
                     style: textTheme.bodyMedium,
@@ -67,18 +74,27 @@ class DetailedWorkoutWidget extends StatelessWidget {
                         ),
                         actions: [
                           TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                            onPressed: () => context.pop(),
                             child: Text(
-                              "SI",
+                              "Cancelar",
                               style: textTheme.labelSmall,
                             ),
                           ),
                           TextButton(
-                            onPressed: () => Navigator.pop(context),
+                            onPressed: () async {
+                              ExerciseService exerciseService =
+                                  ExerciseService();
+
+                              await exerciseService
+                                  .deleteExercise(exercise.id!);
+                              Provider.of<ExerciseProvider>(context,
+                                      listen: false)
+                                  .shouldRefresh();
+
+                              context.pop();
+                            },
                             child: Text(
-                              "NO",
+                              "Aceptar",
                               style: textTheme.labelSmall
                                   ?.copyWith(color: Colors.black),
                             ),

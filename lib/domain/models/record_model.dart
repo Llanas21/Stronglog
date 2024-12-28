@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Record {
-  final String id;
+  final String? id;
   final int lastWeight;
   final DateTime dateTime;
   final String idExercise;
   final String uidUser;
 
   Record(
-      {required this.id,
+      {this.id,
       required this.lastWeight,
       required this.dateTime,
       required this.idExercise,
@@ -28,8 +28,8 @@ class Record {
   // Method to convert an instance to a JSON map
   Map<String, dynamic> toJson() {
     return {
-      'lastWeight': lastWeight,
-      'dateTime': dateTime.toIso8601String(),
+      'last_weight': lastWeight,
+      'date_time': Timestamp.fromDate(dateTime),
       'id_exercise': idExercise,
       'uid_user': uidUser,
     };

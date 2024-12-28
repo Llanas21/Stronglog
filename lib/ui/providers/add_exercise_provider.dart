@@ -19,4 +19,10 @@ class AddExerciseProvider with ChangeNotifier {
     _exercises.remove(exercise);
     notifyListeners();
   }
+
+  // Método para limpiar la lista de ejercicios
+  void clearExercises() {
+    _exercises.clear();
+    notifyListeners();
+  }
 }

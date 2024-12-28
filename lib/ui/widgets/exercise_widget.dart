@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:provider/provider.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/record_model.dart' as r;
+import 'package:stronglog/domain/services/auth_service.dart';
 import 'package:stronglog/domain/services/record_service.dart';
+import 'package:stronglog/main.dart';
+import 'package:stronglog/ui/providers/record_provider.dart';
 
 class ExerciseWidget extends StatelessWidget {
   const ExerciseWidget({
@@ -42,11 +47,11 @@ class ExerciseWidget extends StatelessWidget {
                       style: textTheme.titleSmall,
                     ),
                     Text(
-                      "Tipo: ${exercise.type}",
+                      "Sets: ${exercise.sets}",
                       style: textTheme.bodySmall,
                     ),
                     Text(
-                      "Equipamiento: ${exercise.equipment}",
+                      "Reps: ${exercise.reps}",
                       style: textTheme.bodySmall,
                     )
                   ],
@@ -56,30 +61,35 @@ class ExerciseWidget extends StatelessWidget {
                 child: GestureDetector(
                   child: Column(
                     children: [
-                      FutureBuilder(
-                        future: loadData(exercise.id!),
-                        builder: (BuildContext context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
-                          }
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          }
+                      Consumer(
+                        builder:
+                            (context, RecordProvider recordProvider, child) {
+                          return FutureBuilder(
+                            future: loadData(exercise.id!),
+                            builder: (BuildContext context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              }
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
 
-                          record = snapshot.data;
+                              record = snapshot.data;
 
-                          if (record == null) {
-                            return Text(
-                              "0 lbs",
-                              style: textTheme.titleLarge,
-                            );
-                          } else {
-                            return Text(
-                              "${record!.lastWeight.toString()} lbs",
-                              style: textTheme.titleLarge,
-                            );
-                          }
+                              if (record == null) {
+                                return Text(
+                                  "0 lbs",
+                                  style: textTheme.titleLarge,
+                                );
+                              } else {
+                                return Text(
+                                  "${record!.lastWeight.toString()} lbs",
+                                  style: textTheme.titleLarge,
+                                );
+                              }
+                            },
+                          );
                         },
                       ),
                       Text(
@@ -118,6 +128,7 @@ class ExerciseWidget extends StatelessWidget {
                 style: textTheme.bodyMedium,
               ),
               content: NumberPicker(
+                step: 5,
                 minValue: 0,
                 maxValue: 600,
                 value: currentValue,
@@ -129,10 +140,23 @@ class ExerciseWidget extends StatelessWidget {
               ),
               actions: [
                 TextButton(
-                  onPressed: () {
-                    //TODO Actualiza el valor del peso en el modelo
+                  onPressed: () async {
+                    RecordService recordService = RecordService();
+                    AuthService authService = AuthService();
+                    String uidUser = authService.currentUser!.uid;
 
-                    Navigator.of(context).pop();
+                    r.Record record = r.Record(
+                      lastWeight: currentValue,
+                      dateTime: DateTime.now(),
+                      idExercise: exercise.id!,
+                      uidUser: uidUser,
+                    );
+
+                    await recordService.addRecord(record);
+                    Provider.of<RecordProvider>(context, listen: false)
+                        .shouldRefresh();
+
+                    context.pop();
                   },
                   child: Text(
                     'Aceptar',

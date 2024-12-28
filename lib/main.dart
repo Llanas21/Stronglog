@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/firebase_options.dart';
 import 'package:stronglog/ui/providers/add_exercise_provider.dart';
+import 'package:stronglog/ui/providers/exercise_provider.dart';
+import 'package:stronglog/ui/providers/record_provider.dart';
 import 'package:stronglog/ui/screens/add_exercise_screen.dart';
 import 'package:stronglog/ui/screens/detailed_workout_screen.dart';
 import 'package:stronglog/ui/screens/home_screen.dart';
 import 'package:stronglog/ui/screens/login_screen.dart';
+import 'package:stronglog/ui/screens/modify_exercise_screen.dart';
 import 'package:stronglog/ui/screens/workouts_screen.dart';
 import 'package:stronglog/ui/theme/theme_constants.dart';
 import 'package:stronglog/ui/theme/theme_manager.dart';
@@ -30,6 +34,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<AddExerciseProvider>(
             create: (context) => AddExerciseProvider()),
+        ChangeNotifierProvider<ExerciseProvider>(
+            create: (context) => ExerciseProvider()),
+        ChangeNotifierProvider<RecordProvider>(
+            create: (context) => RecordProvider()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -50,7 +58,7 @@ final GoRouter _router = GoRouter(
       name: "/login",
       path: "/login",
       builder: (context, state) {
-        return LoginScreen();
+        return const LoginScreen();
       },
     ),
     GoRoute(
@@ -84,6 +92,16 @@ final GoRouter _router = GoRouter(
         final Workout workout = state.extra as Workout;
         return AddExerciseScreen(
           workout: workout,
+        );
+      },
+    ),
+    GoRoute(
+      name: "/modify_exercise",
+      path: "/modify_exercise",
+      builder: (context, state) {
+        final Exercise exercise = state.extra as Exercise;
+        return ModifyExerciseScreen(
+          exercise: exercise,
         );
       },
     ),

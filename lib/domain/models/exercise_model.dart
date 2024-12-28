@@ -6,6 +6,8 @@ class Exercise {
   final String equipment;
   final String difficulty;
   final String instructions;
+  final int? sets;
+  final int? reps;
   final String idWorkout;
   final String uidUser;
 
@@ -17,6 +19,8 @@ class Exercise {
       required this.equipment,
       required this.difficulty,
       required this.instructions,
+      this.sets,
+      this.reps,
       required this.idWorkout,
       required this.uidUser});
 
@@ -30,6 +34,8 @@ class Exercise {
       equipment: json['equipment'],
       difficulty: json['difficulty'],
       instructions: json['instructions'],
+      sets: (json['sets'] as num?)?.toInt() ?? 0,
+      reps: (json['reps'] as num?)?.toInt() ?? 0,
       idWorkout: json['id_workout'],
       uidUser: json['uid_user'],
     );
@@ -44,8 +50,39 @@ class Exercise {
       'equipment': equipment,
       'difficulty': difficulty,
       'instructions': instructions,
+      'sets': sets,
+      'reps': reps,
       'id_workout': idWorkout,
       'uid_user': uidUser,
     };
+  }
+
+  // Method to create a copy of an instance with updated fields
+  Exercise copyWith({
+    String? id,
+    String? name,
+    String? type,
+    String? muscle,
+    String? equipment,
+    String? difficulty,
+    String? instructions,
+    int? sets,
+    int? reps,
+    String? idWorkout,
+    String? uidUser,
+  }) {
+    return Exercise(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      type: type ?? this.type,
+      muscle: muscle ?? this.muscle,
+      equipment: equipment ?? this.equipment,
+      difficulty: difficulty ?? this.difficulty,
+      instructions: instructions ?? this.instructions,
+      sets: sets ?? this.sets,
+      reps: reps ?? this.reps,
+      idWorkout: idWorkout ?? this.idWorkout,
+      uidUser: uidUser ?? this.uidUser,
+    );
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/domain/services/exercise_service.dart';
+import 'package:stronglog/ui/providers/exercise_provider.dart';
 import 'package:stronglog/ui/widgets/detailed_workout_widget.dart';
 import 'package:stronglog/ui/widgets/drawer_widget.dart';
 
@@ -43,31 +45,35 @@ class DetailedWorkoutScreen extends StatelessWidget {
               height: mediaQuery.height * 0.04,
             ),
             Expanded(
-              child: FutureBuilder(
-                future: loadData(),
-                builder: (BuildContext context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
+              child: Consumer(
+                builder: (context, ExerciseProvider exerciseProvider, child) {
+                  return FutureBuilder(
+                    future: loadData(),
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                  List<Exercise> exercises = snapshot.data!;
+                      List<Exercise> exercises = snapshot.data!;
 
-                  if (exercises.isEmpty) {
-                    return const Center(
-                      child: Text("No hay ejercicios para este día"),
-                    );
-                  } else {
-                    return ListView.builder(
-                        itemCount: exercises.length,
-                        itemBuilder: (context, i) {
-                          return DetailedWorkoutWidget(
-                            exercise: exercises[i],
-                          );
-                        });
-                  }
+                      if (exercises.isEmpty) {
+                        return const Center(
+                          child: Text("No hay ejercicios para este día"),
+                        );
+                      } else {
+                        return ListView.builder(
+                            itemCount: exercises.length,
+                            itemBuilder: (context, i) {
+                              return DetailedWorkoutWidget(
+                                exercise: exercises[i],
+                              );
+                            });
+                      }
+                    },
+                  );
                 },
               ),
             )
@@ -77,7 +83,7 @@ class DetailedWorkoutScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.add),
           onPressed: () {
-            context.goNamed("/add_exercise", extra: workout);
+            context.pushNamed("/add_exercise", extra: workout);
           }),
       drawer: const DrawerWidget(),
     );
