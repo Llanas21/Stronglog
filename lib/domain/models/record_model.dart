@@ -5,13 +5,14 @@ class Record {
   final int lastWeight;
   final DateTime dateTime;
   final String idExercise;
+  final String uidUser;
 
-  Record({
-    required this.id,
-    required this.lastWeight,
-    required this.dateTime,
-    required this.idExercise,
-  });
+  Record(
+      {required this.id,
+      required this.lastWeight,
+      required this.dateTime,
+      required this.idExercise,
+      required this.uidUser});
 
   // Factory method to create an instance from a JSON map
   factory Record.fromJson(Map<String, dynamic> json, String id) {
@@ -20,6 +21,7 @@ class Record {
       lastWeight: (json['last_weight'] as num).toInt(),
       dateTime: (json['date_time'] as Timestamp).toDate(),
       idExercise: json['id_exercise'],
+      uidUser: json['uid_user'],
     );
   }
 
@@ -29,6 +31,7 @@ class Record {
       'lastWeight': lastWeight,
       'dateTime': dateTime.toIso8601String(),
       'id_exercise': idExercise,
+      'uid_user': uidUser,
     };
   }
 }

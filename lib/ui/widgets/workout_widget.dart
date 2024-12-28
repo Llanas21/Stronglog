@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stronglog/domain/models/workout_model.dart';
 
 class WorkoutWidget extends StatelessWidget {
@@ -48,7 +49,9 @@ class WorkoutWidget extends StatelessWidget {
                   child: const Align(
                       alignment: Alignment.centerRight,
                       child: Icon(Icons.keyboard_arrow_right)),
-                  onTap: () {},
+                  onTap: () {
+                    context.goNamed("/detailed_workout", extra: workout);
+                  },
                 ))
           ],
         ),

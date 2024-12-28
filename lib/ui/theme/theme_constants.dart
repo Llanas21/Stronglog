@@ -92,6 +92,17 @@ ThemeData lightTheme = ThemeData(
   popupMenuTheme: const PopupMenuThemeData(
     color: Colors.white,
   ),
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: TextStyle(color: Colors.grey[400], fontSize: 16),
+    border:
+        const OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+    enabledBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.black, width: 2.0)),
+    focusedBorder: const OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.black, width: 2.0),
+    ),
+  ),
+
   drawerTheme: const DrawerThemeData(
     backgroundColor: Colors.white,
   ),

@@ -7,6 +7,7 @@ class Exercise {
   final String difficulty;
   final String instructions;
   final String idWorkout;
+  final String uidUser;
 
   Exercise(
       {this.id,
@@ -16,7 +17,8 @@ class Exercise {
       required this.equipment,
       required this.difficulty,
       required this.instructions,
-      required this.idWorkout});
+      required this.idWorkout,
+      required this.uidUser});
 
   // Factory method to create an instance from a JSON map
   factory Exercise.fromJson(Map<String, dynamic> json, String id) {
@@ -29,6 +31,7 @@ class Exercise {
       difficulty: json['difficulty'],
       instructions: json['instructions'],
       idWorkout: json['id_workout'],
+      uidUser: json['uid_user'],
     );
   }
 
@@ -42,6 +45,7 @@ class Exercise {
       'difficulty': difficulty,
       'instructions': instructions,
       'id_workout': idWorkout,
+      'uid_user': uidUser,
     };
   }
 }

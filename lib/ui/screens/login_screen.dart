@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stronglog/domain/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +22,6 @@ class LoginScreen extends StatelessWidget {
     Size mediaQuery = MediaQuery.of(context).size;
 
     AuthService authService = AuthService();
-
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -47,10 +52,12 @@ class LoginScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         TextFormField(
+                          onTapOutside: (_) =>
+                              FocusScope.of(context).requestFocus(FocusNode()),
                           controller: emailController,
+                          style: textTheme.bodyMedium,
                           decoration: const InputDecoration(
                             labelText: 'tu email',
-                            border: OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -61,10 +68,12 @@ class LoginScreen extends StatelessWidget {
                         ),
                         SizedBox(height: mediaQuery.height * 0.04),
                         TextFormField(
+                          onTapOutside: (_) =>
+                              FocusScope.of(context).requestFocus(FocusNode()),
                           controller: passwordController,
+                          style: textTheme.bodyMedium,
                           decoration: const InputDecoration(
                             labelText: 'tu contraseña',
-                            border: OutlineInputBorder(),
                           ),
                           obscureText: true,
                           validator: (value) {
@@ -89,10 +98,37 @@ class LoginScreen extends StatelessWidget {
                                     passwordController.text.trim(),
                                   );
                                   if (user != null) {
-                                    print("Usuario autenticado: ${user.email}");
+                                    context.goNamed("/home");
                                   }
                                 } catch (e) {
-                                  print("Error al iniciar sesión: $e");
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          'Error de autenticación',
+                                          style: textTheme.bodyMedium,
+                                        ),
+                                        content: Text(
+                                          "Email o contraseña incorrectos",
+                                          style: textTheme.bodySmall,
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text(
+                                              'Aceptar',
+                                              style: textTheme.labelSmall
+                                                  ?.copyWith(
+                                                      color: Colors.black),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
                                 }
                               }
                             },

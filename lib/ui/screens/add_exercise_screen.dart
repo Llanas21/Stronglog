@@ -4,6 +4,7 @@ import 'package:stronglog/domain/models/api_ninja_model.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/domain/services/api_ninja_service.dart';
+import 'package:stronglog/domain/services/auth_service.dart';
 import 'package:stronglog/domain/services/exercise_service.dart';
 import 'package:stronglog/ui/providers/add_exercise_provider.dart';
 import 'package:stronglog/ui/widgets/api_ninja_widget.dart';
@@ -174,6 +175,8 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
             TextButton(
               onPressed: () async {
                 ExerciseService exerciseService = ExerciseService();
+                AuthService authService = AuthService();
+                String uidUser = authService.currentUser!.uid;
 
                 for (ApiNinja apiExercise in exercises) {
                   Exercise exercise = Exercise(
@@ -184,6 +187,7 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
                     difficulty: apiExercise.difficulty,
                     instructions: apiExercise.instructions,
                     idWorkout: widget.workout.id,
+                    uidUser: uidUser,
                   );
 
                   await exerciseService.addExercise(exercise);

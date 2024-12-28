@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/domain/services/exercise_service.dart';
@@ -73,8 +74,11 @@ class DetailedWorkoutScreen extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton:
-          FloatingActionButton(child: const Icon(Icons.add), onPressed: () {}),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.add),
+          onPressed: () {
+            context.goNamed("/add_exercise", extra: workout);
+          }),
       drawer: const DrawerWidget(),
     );
   }

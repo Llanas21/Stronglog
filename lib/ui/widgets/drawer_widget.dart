@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -52,7 +53,9 @@ class DrawerWidget extends StatelessWidget {
                   'Inicio',
                   style: textTheme.bodyMedium,
                 ),
-                onTap: () {},
+                onTap: () {
+                  context.goNamed("/home");
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.fitness_center),
@@ -60,7 +63,9 @@ class DrawerWidget extends StatelessWidget {
                   'Rutinas',
                   style: textTheme.bodyMedium,
                 ),
-                onTap: () {},
+                onTap: () {
+                  context.goNamed("/workouts");
+                },
               ),
               SizedBox(
                 height: mediaQuery.height * 0.4,
