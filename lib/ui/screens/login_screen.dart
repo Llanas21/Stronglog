@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         actions: [
                                           TextButton(
                                             onPressed: () {
-                                              Navigator.of(context).pop();
+                                              context.pop();
                                             },
                                             child: Text(
                                               'Aceptar',
@@ -159,6 +159,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               'Crea una nueva cuenta',
                             ),
                           ),
+                        ),
+                        SizedBox(
+                          height: mediaQuery.height * 0.04,
                         ),
                       ],
                     ),

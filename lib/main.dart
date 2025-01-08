@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:stronglog/app.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/firebase_options.dart';
@@ -52,8 +53,15 @@ class MyApp extends StatelessWidget {
 }
 
 final GoRouter _router = GoRouter(
-  initialLocation: "/login",
+  initialLocation: "/app",
   routes: <RouteBase>[
+    GoRoute(
+      name: "/app",
+      path: "/app",
+      builder: (context, state) {
+        return const App();
+      },
+    ),
     GoRoute(
       name: "/login",
       path: "/login",

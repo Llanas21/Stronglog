@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stronglog/domain/services/auth_service.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
@@ -67,9 +68,6 @@ class DrawerWidget extends StatelessWidget {
                   context.goNamed("/workouts");
                 },
               ),
-              SizedBox(
-                height: mediaQuery.height * 0.4,
-              ),
               ListTile(
                   leading: const Icon(Icons.settings),
                   title: Text(
@@ -77,6 +75,52 @@ class DrawerWidget extends StatelessWidget {
                     style: textTheme.bodyMedium,
                   ),
                   onTap: () {}),
+              ListTile(
+                  leading: const Icon(Icons.logout),
+                  title: Text(
+                    'Cerrar sesión',
+                    style: textTheme.bodyMedium,
+                  ),
+                  onTap: () async {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            'Cerrar sesión',
+                            style: textTheme.bodyMedium,
+                          ),
+                          content: Text(
+                            "¿Estás seguro de que deseas cerrar la sesión?",
+                            style: textTheme.bodySmall,
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () async {
+                                AuthService authService = AuthService();
+                                await authService.signOut();
+                                context.goNamed('/login');
+                              },
+                              child: Text(
+                                'Aceptar',
+                                style: textTheme.labelSmall,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                context.pop();
+                              },
+                              child: Text(
+                                'Cancelar',
+                                style: textTheme.labelSmall
+                                    ?.copyWith(color: Colors.black),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }),
             ],
           ),
         ],
