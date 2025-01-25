@@ -26,6 +26,27 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
   TextEditingController searchController = TextEditingController();
   List<ApiNinja> filteredExercises = [];
 
+  final List<String> muscles = [
+    'abdominals',
+    'abductors',
+    'adductors',
+    'biceps',
+    'calves',
+    'chest',
+    'forearms',
+    'glutes',
+    'hamstrings',
+    'lats',
+    'lower_back',
+    'middle_back',
+    'neck',
+    'quadriceps',
+    'traps',
+    'triceps'
+  ];
+
+  String? selectedMuscle;
+
   @override
   void initState() {
     super.initState();
@@ -35,22 +56,52 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
 
   // Método para filtrar los ejercicios según el texto de búsqueda
   void _filterExercises() {
+    print(selectedMuscle);
     String query = searchController.text.toLowerCase();
     setState(() {
-      filteredExercises = exercises.where((exercise) {
-        return exercise.name.toLowerCase().contains(query);
-      }).toList();
+      if (selectedMuscle != null && searchController.text.isEmpty) {
+        filteredExercises = exercises.where((exercise) {
+          return exercise.muscle == selectedMuscle;
+        }).toList();
+        for (var exercise in filteredExercises) {
+          print(exercise.muscle);
+        }
+      } else {
+        filteredExercises = exercises.where((exercise) {
+          return exercise.name.toLowerCase().contains(query) &&
+              (selectedMuscle == null || exercise.muscle == selectedMuscle);
+        }).toList();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    TextTheme textTheme = Theme.of(context).textTheme;
+
     Size mediaQuery = MediaQuery.of(context).size;
 
     return WillPopScope(
       onWillPop: () => showPopConfirmation(context),
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          actions: [
+            PopupMenuButton<String>(
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem<String>(
+                  onTap: () {
+                    context.pushNamed('/new_exercise');
+                  },
+                  child: Text(
+                    'Nuevo ejercicio',
+                    style: textTheme.bodyMedium,
+                  ),
+                ),
+              ],
+              icon: const Icon(Icons.more_vert_outlined),
+            ),
+          ],
+        ),
         body: Container(
           decoration: const BoxDecoration(border: Border(top: BorderSide())),
           child: Column(
@@ -78,7 +129,34 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
                 ),
               ),
               SizedBox(
-                height: mediaQuery.height * 0.04,
+                height: mediaQuery.height * 0.02,
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: mediaQuery.width * 0.04),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: muscles.map((muscle) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: ChoiceChip(
+                          label: Text(muscle),
+                          selected: selectedMuscle == muscle,
+                          onSelected: (isSelected) {
+                            setState(() {
+                              selectedMuscle = isSelected ? muscle : null;
+                              _filterExercises();
+                            });
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: mediaQuery.height * 0.02,
               ),
               Expanded(
                 child: FutureBuilder(
@@ -93,8 +171,9 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
 
                     exercises = snapshot.data!;
 
-                    // Si no hay texto de búsqueda, mostramos todos los ejercicios
-                    if (searchController.text.isEmpty) {
+                    // Si no hay texto de búsqueda y no hay músculo seleccionado, mostramos todos los ejercicios
+                    if (selectedMuscle == null &&
+                        searchController.text.isEmpty) {
                       filteredExercises = exercises;
                     }
 
@@ -175,9 +254,9 @@ class _AddExerciseScreenState extends State<AddExerciseScreen> {
               ],
             ),
           ) ??
-          false; // Si el diálogo se cierra sin seleccionar nada, devuelve false
+          false;
     } else {
-      return true; // Si no hay ejercicios seleccionados, permite salir sin confirmar
+      return true;
     }
   }
 

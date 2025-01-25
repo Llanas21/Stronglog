@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:stronglog/app.dart';
+import 'package:stronglog/domain/models/api_ninja_model.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
 import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/firebase_options.dart';
@@ -10,10 +11,12 @@ import 'package:stronglog/ui/providers/add_exercise_provider.dart';
 import 'package:stronglog/ui/providers/exercise_provider.dart';
 import 'package:stronglog/ui/providers/record_provider.dart';
 import 'package:stronglog/ui/screens/add_exercise_screen.dart';
+import 'package:stronglog/ui/screens/api_ninja_detailed_screen.dart';
 import 'package:stronglog/ui/screens/detailed_workout_screen.dart';
 import 'package:stronglog/ui/screens/home_screen.dart';
 import 'package:stronglog/ui/screens/login_screen.dart';
 import 'package:stronglog/ui/screens/modify_exercise_screen.dart';
+import 'package:stronglog/ui/screens/new_exercise_screen.dart';
 import 'package:stronglog/ui/screens/workouts_screen.dart';
 import 'package:stronglog/ui/theme/theme_constants.dart';
 import 'package:stronglog/ui/theme/theme_manager.dart';
@@ -111,6 +114,23 @@ final GoRouter _router = GoRouter(
         return ModifyExerciseScreen(
           exercise: exercise,
         );
+      },
+    ),
+    GoRoute(
+      name: "/api_ninja_detailed",
+      path: "/api_ninja_detailed",
+      builder: (context, state) {
+        final ApiNinja exercise = state.extra as ApiNinja;
+        return ApiNinjaDetailedScreen(
+          exercise: exercise,
+        );
+      },
+    ),
+    GoRoute(
+      name: "/new_exercise",
+      path: "/new_exercise",
+      builder: (context, state) {
+        return const NewExerciseScreen();
       },
     ),
   ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:stronglog/domain/models/api_ninja_model.dart';
 import 'package:stronglog/ui/providers/add_exercise_provider.dart';
@@ -60,26 +61,34 @@ class _ApiNinjaWidgetState extends State<ApiNinjaWidget> {
                 ),
                 Expanded(
                     flex: 3,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.exercise.muscle,
-                          style: textTheme.labelSmall,
-                        ),
-                        Text(
-                          widget.exercise.name,
-                          style: textTheme.titleSmall,
-                        ),
-                        Text(
-                          "Tipo: ${widget.exercise.type}",
-                          style: textTheme.bodySmall,
-                        ),
-                        Text(
-                          "Equipamiento: ${widget.exercise.equipment}",
-                          style: textTheme.bodySmall,
-                        )
-                      ],
+                    child: GestureDetector(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.exercise.muscle,
+                            style: textTheme.labelSmall,
+                          ),
+                          Text(
+                            widget.exercise.name,
+                            style: textTheme.titleSmall,
+                          ),
+                          Text(
+                            "Tipo: ${widget.exercise.type}",
+                            style: textTheme.bodySmall,
+                          ),
+                          Text(
+                            "Equipamiento: ${widget.exercise.equipment}",
+                            style: textTheme.bodySmall,
+                          )
+                        ],
+                      ),
+                      onTap: () {
+                        context.pushNamed(
+                          '/api_ninja_detailed',
+                          extra: widget.exercise,
+                        );
+                      },
                     )),
               ],
             ),

@@ -102,7 +102,12 @@ ThemeData lightTheme = ThemeData(
       borderSide: BorderSide(color: Colors.black, width: 2.0),
     ),
   ),
-
+  chipTheme: const ChipThemeData(
+    labelStyle: TextStyle(
+      color: Colors.black,
+      fontSize: 12,
+    ),
+  ),
   drawerTheme: const DrawerThemeData(
     backgroundColor: Colors.white,
   ),
