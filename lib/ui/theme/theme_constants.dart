@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 
 ThemeData lightTheme = ThemeData(
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: Colors.black,
+  ),
   listTileTheme: const ListTileThemeData(
+    titleTextStyle: TextStyle(
+      color: Colors.black,
+      fontSize: 14,
+      fontWeight: FontWeight.bold,
+    ),
+    subtitleTextStyle: TextStyle(
+      color: Colors.black,
+      fontSize: 12,
+    ),
     iconColor: Colors.black,
   ),
   snackBarTheme: const SnackBarThemeData(

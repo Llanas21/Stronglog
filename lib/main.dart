@@ -9,9 +9,11 @@ import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/firebase_options.dart';
 import 'package:stronglog/ui/providers/add_exercise_provider.dart';
 import 'package:stronglog/ui/providers/exercise_provider.dart';
+import 'package:stronglog/ui/providers/note_provider.dart';
 import 'package:stronglog/ui/providers/record_provider.dart';
 import 'package:stronglog/ui/screens/add_exercise_screen.dart';
 import 'package:stronglog/ui/screens/api_ninja_detailed_screen.dart';
+import 'package:stronglog/ui/screens/detailed_exercise_screen.dart';
 import 'package:stronglog/ui/screens/detailed_workout_screen.dart';
 import 'package:stronglog/ui/screens/home_screen.dart';
 import 'package:stronglog/ui/screens/login_screen.dart';
@@ -42,6 +44,8 @@ class MyApp extends StatelessWidget {
             create: (context) => ExerciseProvider()),
         ChangeNotifierProvider<RecordProvider>(
             create: (context) => RecordProvider()),
+        ChangeNotifierProvider<NoteProvider>(
+            create: (context) => NoteProvider()),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
@@ -131,6 +135,16 @@ final GoRouter _router = GoRouter(
       path: "/new_exercise",
       builder: (context, state) {
         return const NewExerciseScreen();
+      },
+    ),
+    GoRoute(
+      name: "/detailed_exercise",
+      path: "/detailed_exercise",
+      builder: (context, state) {
+        final Exercise exercise = state.extra as Exercise;
+        return DetailedExerciseScreen(
+          exercise: exercise,
+        );
       },
     ),
   ],

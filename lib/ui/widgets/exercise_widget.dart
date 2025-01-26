@@ -35,26 +35,31 @@ class ExerciseWidget extends StatelessWidget {
           children: [
             Expanded(
                 flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      exercise.muscle,
-                      style: textTheme.labelSmall,
-                    ),
-                    Text(
-                      exercise.name,
-                      style: textTheme.titleSmall,
-                    ),
-                    Text(
-                      "Sets: ${exercise.sets}",
-                      style: textTheme.bodySmall,
-                    ),
-                    Text(
-                      "Reps: ${exercise.reps}",
-                      style: textTheme.bodySmall,
-                    )
-                  ],
+                child: GestureDetector(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        exercise.muscle,
+                        style: textTheme.labelSmall,
+                      ),
+                      Text(
+                        exercise.name,
+                        style: textTheme.titleSmall,
+                      ),
+                      Text(
+                        "Sets: ${exercise.sets}",
+                        style: textTheme.bodySmall,
+                      ),
+                      Text(
+                        "Reps: ${exercise.reps}",
+                        style: textTheme.bodySmall,
+                      )
+                    ],
+                  ),
+                  onTap: () {
+                    context.pushNamed('/detailed_exercise', extra: exercise);
+                  },
                 )),
             Expanded(
                 flex: 1,

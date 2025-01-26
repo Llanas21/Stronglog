@@ -64,6 +64,24 @@ class RecordService {
     }
   }
 
+  // Read records from exercise
+  Future<List<Record>> getRecordsByExercise(String idExercise) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection(collectionPath)
+          .where('id_exercise', isEqualTo: idExercise)
+          .orderBy('date_time', descending: false)
+          .get();
+
+      return snapshot.docs
+          .map((doc) =>
+              Record.fromJson(doc.data() as Map<String, dynamic>, doc.id))
+          .toList();
+    } catch (e) {
+      throw Exception('Error fetching records: $e');
+    }
+  }
+
   // Update an existing record
   Future<void> updateRecord(String id, Record updatedRecord) async {
     try {

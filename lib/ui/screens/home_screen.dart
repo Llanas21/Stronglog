@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stronglog/domain/models/exercise_model.dart';
+import 'package:stronglog/domain/models/workout_model.dart';
 import 'package:stronglog/domain/services/exercise_service.dart';
+import 'package:stronglog/domain/services/workout_service.dart';
 import 'package:stronglog/ui/widgets/drawer_widget.dart';
 import 'package:stronglog/ui/widgets/exercise_widget.dart';
 
@@ -48,6 +50,12 @@ class HomeScreen extends StatelessWidget {
 
                   List<Exercise> exercises = snapshot.data!;
 
+                  if (exercises.isEmpty) {
+                    return const Center(
+                      child: Text('No existen ejercicios aún'),
+                    );
+                  }
+
                   return ListView.builder(
                       itemCount: exercises.length,
                       itemBuilder: (context, i) {
@@ -65,8 +73,30 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Future<List<Exercise>> loadData() async {
+  Future<List<Exercise>?> loadData() async {
+    String today = _getTodayName();
+    WorkoutService workoutService = WorkoutService();
+    Workout? workout = await workoutService.getFirstWorkoutByDay(today);
     ExerciseService exerciseService = ExerciseService();
-    return await exerciseService.getExercises();
+    if (workout != null) {
+      return await exerciseService.getExercisesByWorkout(workout.id);
+    } else {
+      return null;
+    }
+  }
+
+  String _getTodayName() {
+    DateTime now = DateTime.now();
+    List<String> days = [
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+      'Domingo'
+    ];
+
+    return days[now.weekday - 1];
   }
 }

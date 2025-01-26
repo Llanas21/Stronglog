@@ -44,6 +44,27 @@ class WorkoutService {
     }
   }
 
+  // Leer el primer workout por día específico
+  Future<Workout?> getFirstWorkoutByDay(String day) async {
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection(collectionPath)
+          .where('day', isEqualTo: day)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        return Workout.fromJson(
+          snapshot.docs.first.data() as Map<String, dynamic>,
+          snapshot.docs.first.id,
+        );
+      } else {
+        return null; // No hay coincidencias
+      }
+    } catch (e) {
+      throw Exception('Error al obtener el primer workout por día: $e');
+    }
+  }
+
   // Leer un workout específico por ID
   Future<Workout?> getWorkoutById(String id) async {
     try {
